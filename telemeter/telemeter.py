@@ -123,6 +123,8 @@ class TelenetSession(object):
         self.s.headers[
             "User-Agent"
         ] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.182 Safari/537.36"
+        self.identifier = None
+        self.profiles = None
 
     def login(self, username, password):
         # Get OAuth2 state / nonce
@@ -187,6 +189,8 @@ class TelenetSession(object):
             timeout=10,
         )
         assert r.status_code == 200
+        self.identifier = r.json()["mobileusage"]["identifier"]
+        self.profiles = r.json()["mobileusage"]["profiles"]
         return r.json()
 
     def telemeter(self):
@@ -204,9 +208,12 @@ class TelenetSession(object):
         r = self.s.post(
             "https://api.prd.telenet.be/ocapi-action/public/?t=pauseprofiles",
             data={
-                "packidentifier": pack,
-                "paused": paused,
-                "pid": pid,
+                #"j_username": username,
+                #"j_password": password,
+                #"rememberme": True,
+                "packidentifier": pack, #"WIGO25_44663915"
+                "paused": paused, # True
+                "pid": pid, #"15457738"
             },
             timeout=10,
         )
