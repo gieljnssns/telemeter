@@ -199,6 +199,18 @@ class TelenetSession(object):
         )
         assert r.status_code == 200
         return next(Telemeter.from_json(r.json()))
+    
+    def pauseprofiles(self, pack, paused, pid):
+        r = self.s.post(
+            "https://api.prd.telenet.be/ocapi-action/public/?t=pauseprofiles",
+            data={
+                "packidentifier": pack,
+                "paused": paused,
+                "pid": pid,
+            },
+            timeout=10,
+        )
+        assert r.status_code == 200
 
 
 def _main():
