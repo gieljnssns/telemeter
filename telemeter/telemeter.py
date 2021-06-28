@@ -177,6 +177,17 @@ class TelenetSession(object):
         )
         assert r.status_code == 200
         return r.json()
+    
+    def mobileusage(self):
+        r = self.s.get(
+            "https://api.prd.telenet.be/ocapi/public/?p=mobileusage",
+            headers={
+                "x-alt-referer": "https://www2.telenet.be/nl/klantenservice/#/pages=1/menu=selfservice",
+            },
+            timeout=10,
+        )
+        assert r.status_code == 200
+        return r.json()
 
     def telemeter(self):
         r = self.s.get(
